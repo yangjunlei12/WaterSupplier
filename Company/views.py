@@ -23,7 +23,10 @@ def all_cqmpanies(request):
         return HttpResponse(status=404)
 
 ### client 商家动态列表
-def get_news(request, company_id):
+def get_news(request):
+    company_id = request.POST.get('company_id', None)
+    if not company_id:
+        return HttpResponse(status=404)
     pages = request.GET.get('pages', 0)
     objs = ArticleModel.objects.filter(company_id=company_id, type=True)
     jf = JsonFactory()
@@ -42,7 +45,10 @@ def get_news(request, company_id):
         return HttpResponse(status=404)
 
 #### client 商家活动列表
-def get_activities(request, company_id):
+def get_activities(request):
+    company_id = request.POST.get('company_id', None)
+    if not company_id:
+        return HttpResponse(status=404)
     pages = request.GET.get('pages', 0)
     objs = ArticleModel.objects.filter(company_id=company_id, type=False)
     jf = JsonFactory()
@@ -67,7 +73,10 @@ def get_activities_count(request):
 
 
 #### client 根据id获取文章
-def get_article(request, id):
+def get_article(request):
+    id = request.POST.get('id', None)
+    if not id:
+        return HttpResponse(status=404)
     obj = ArticleModel.objects.filter(id=id)
     if obj:
         obj = obj[0]

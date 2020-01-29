@@ -18,9 +18,9 @@ from django.urls import path, re_path
 import Products.views as views
 
 urlpatterns = [
-   re_path(r'product/(?P<id>\d+)/$', views.get_product_info),
+   re_path(r'product/', views.get_product_info),
    path('all/', views.get_product_list),
-   re_path(r'company/(?P<company_id>\d+)/$', views.get_company_product),
+   re_path(r'company/', views.get_company_product),
    re_path(r'add/(?P<company_id>\d+)/$', views.add_product),
    re_path(r'show/(?P<company_id>\d+)/$', views.show_com_pro),
 ]

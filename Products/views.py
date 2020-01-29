@@ -29,7 +29,10 @@ def get_product_list(request):
 
 
 ## client 通过商品id获取商品信息。
-def get_product_info(request, id):
+def get_product_info(request):
+    id = request.POST.get('id', None)
+    if not id:
+        return HttpResponse(status=404)
     obj = ProductModel.objects.filter(id=id)
     if obj:
         obj = obj[0]
@@ -46,7 +49,10 @@ def get_product_info(request, id):
         return HttpResponse(status=404)
 
 ####通过商家id按创建时间顺序获得产品
-def get_company_product(request, company_id):
+def get_company_product(request):
+    company_id = request.POST.get('company_id', None)
+    if not company_id:
+        return HttpResponse(status=404)
     objs = ProductModel.objects.filter(company_id=company_id).order_by('create')
     pages = request.GET.get('page', 0)
     jf = JsonFactory()
