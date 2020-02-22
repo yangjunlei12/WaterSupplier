@@ -1,9 +1,11 @@
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response, redirect
 from django.http import JsonResponse, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 from Company.models import CompanyModel, ArticleModel
 from Company.CmpJsonFactory import CmpJsonFactory as JsonFactory
 from utils.ListFactory import make_list
 from Company.forms import *
+from datetime import datetime
 # Create your views here.
 
 ####  client 获取所以的商家 按会员级别顺序返回
@@ -127,8 +129,25 @@ def render_table(request):
 def create_com(request):
     return render_to_response('post.html', {'form': CompanyForm()})
 
+@csrf_exempt
 def add_article(request):
-    return render_to_response('post.html', {'form': ArticleForm()})
+    if request.method == 'POST':
+        form = ArticleForm(request.POST)
+        company_id = request.GET.get('company_id', False)
+        print(form.is_valid())
+        if form.is_valid() and company_id:
+            print('worked here')
+            post = form.save(commit=False)
+            post.company_id = company_id
+            post.visits = 0
+            post.likes = 0
+            post.shares = 0
+            post.create_time = datetime.now()
+            print(post)
+            post.save()
+            return redirect('post_detail', pk=post.pk)
+
+    return render(request, 'post.html', {'form': ArticleForm()})
 
 def test_func(request):
    
