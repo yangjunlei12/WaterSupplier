@@ -17,10 +17,21 @@ from django.contrib import admin
 from django.urls import path, re_path
 import Products.views as views
 
+
+'''
+ productAPI/ + ...
+'''
 urlpatterns = [
-   re_path(r'product/', views.get_product_info),
-   path('all/', views.get_product_list),
-   re_path(r'company/', views.get_company_product),
-   re_path(r'add/(?P<company_id>\d+)/$', views.add_product),
-   re_path(r'show/(?P<company_id>\d+)/$', views.show_com_pro),
+    re_path(r'product/', views.get_product_info),
+    re_path(r'add/(?P<company_id>\d+)/$', views.add_product),
+    re_path(r'show/(?P<company_id>\d+)/$', views.show_com_pro),
+
+    path('getCompanys', views.all_cqmpanies),
+    path('getList/', views.get_product_list),
+    re_path(r'getCategory/', views.get_company_product),
+
+    path('uploadCover', views.uploadCover),
+    path('uploadDetailImg', views.upload_detail),
+    path('commitProduct', views.commitProduct),
+    path('addCategory', views.add_category),
 ]

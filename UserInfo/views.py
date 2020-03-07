@@ -3,6 +3,18 @@ from django.http import JsonResponse, HttpResponse
 from UserInfo.models import UserModel
 from UserInfo.UserJsonFactory import UserJsonFactory as JsonFactory
 # Create your views here.
+
+def get_num(request):
+    if request.method == 'POST':
+        num = UserModel.objects.count()
+        return JsonResponse({'code': 200, 'data':[{'num': num}]})
+
+def get_vip_num(request):
+    if request.method == 'POST':
+        num = UserModel.objects.filter(role=1).count()
+        return JsonResponse({'code': 200, 'data':[{'num': num}]})
+
+
 def login(request):
     pass
 

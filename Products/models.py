@@ -4,6 +4,7 @@ from django.db import models
 class ProductModel(models.Model):
     id         = models.AutoField(primary_key=True)
     company_id = models.IntegerField(default=0)
+    type_id    = models.IntegerField(default=0)
     title      = models.CharField(null=False, max_length=30)
     images     = models.CharField(default="", max_length=500)
     abstract   = models.CharField(default="", max_length=100)
@@ -17,3 +18,7 @@ class ProductModel(models.Model):
     discount   = models.FloatField(default=0.0)
     create     = models.DateField(auto_now=True)
     
+class ProductType(models.Model):
+    id   = models.AutoField(primary_key=True)
+    company_id = models.IntegerField(default=0)
+    name = models.CharField(default="", max_length=100)

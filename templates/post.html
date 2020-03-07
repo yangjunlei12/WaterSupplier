@@ -1,13 +1,35 @@
-{% load staticfiles %}
-{% include "base.html" %}
-{% block content %}
-<form method="post" action="./addarticle">
-    {% csrf_token %}
-    {{ form.media }}
-    <!-- {{ form.as_p }} -->
-    <table style="width: 1400px;">
-    {{ form.as_table }}
-    </table>
-    <p><input style="width: 40px;height: 200px;" type="submit" value="post"></p>
-</form>         
+{% extends "base.html" %}
+
+{% block content %} 
+<style>
+    .center_form {
+        position: fixed;
+        top: 50%;
+        left: 60%;
+        /* background-color: #000; */
+        width: 80%;
+        height: 80%;
+        -webkit-transform: translateX(-50%) translateY(-50%);
+        overflow-y: scroll;
+        overflow-x: scroll;
+    }
+</style>
+
+<h1 class="h3 mb-2 text-gray-800">{{table_name}}</h1>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+    </div>
+    <div class="center_form">
+        <form method="post" action="./commitArticle">
+            {% csrf_token %}
+            {{ form.media }}
+            <!-- {{ form.as_p }} -->
+            <table style="width: 1400px;">
+            {{ form.as_table }}
+            </table>
+            <p><input style="width: 45px;height: 34px;" type="submit" value="提交"></p>
+        </form>
+    </div>
+</div>
 {% endblock %}

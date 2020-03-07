@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 
 class Membership(models.Model):
+    # 1为会员
     id = models.AutoField(primary_key=True)
     role_name = models.CharField(unique=True, max_length=25)
 

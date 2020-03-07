@@ -20,10 +20,19 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('admin/doc/', include('django.contrib.admindocs.urls')),
+    # 小程序
     path('user/', include('UserInfo.urls')),
-    path('products/', include('Products.urls')),
-    path('agency/', include('Agency.urls')),
-    path('company/', include('Company.urls')),
+    path('product/', include('Products.urls')),
+    path('agent/', include('Agency.urls')),
+    path('activity/', include('Company.urls')),
+    #后端
+    path('userAPI/', include('UserInfo.urls')),
+    path('productAPI/', include('Products.urls')),
+    path('agent/', include('Agency.urls')),
+    path('articleAPI/', include('Company.urls'), name='articleAPI'),
+    path('img/', include('Image.urls')),
+    # 
     path('mdeditor/', include('mdeditor.urls')),
     path('example/', include('example.urls')),
 ]

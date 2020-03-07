@@ -10,14 +10,14 @@ class CompanyForm(forms.ModelForm):
 class ArticleForm(forms.ModelForm):
     class Meta:
         model = ArticleModel
-        exclude = ['company_id', 'visits', 'likes', 'shares', 'create_time',]
+        exclude = ['visits', 'likes', 'shares', 'create_time','status', 'member_status']
         labels  = {
             'type': '类型',
             'title': '标题',
             'images': '图片',
             'abstract': '摘要',
-            'status': '状态',
-            'member_status': '会员状态',
+            # 'status': '状态',
+            # 'member_status': '会员状态',
             'content': '内容',
         }
         # widgets = {

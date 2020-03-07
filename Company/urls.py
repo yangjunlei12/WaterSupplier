@@ -17,14 +17,26 @@ from django.contrib import admin
 from django.urls import path
 import Company.views as views
 
+
+'''
+articleAPI/ + ...
+'''
 urlpatterns = [
-   path('all', views.all_cqmpanies),
-   path(r'news/(?P<company_id>\d+)/$', views.get_news),
-   path(r'activities/(?P<company_id>\d+)/$', views.get_activities),
-   path('activities_count', views.get_activities_count),
-   path(r'article/(?P<id>\d+)/$', views.get_article),
-   path('test', views.test_func),
-   path('companies', views.render_table),
-   path('addcompany', views.create_com),
-   path('addarticle', views.add_article)
+#    path(r'news/(?P<company_id>\d+)/$', views.get_news),
+#    path(r'activities/(?P<company_id>\d+)/$', views.get_activities),
+    path('activities_count', views.get_activities_count),
+    path(r'article/(?P<id>\d+)/$', views.get_article),
+    path('test', views.test_func),
+    path('companies', views.render_table),
+    path('addcompany', views.create_com),
+    # path('addarticle', views.add_article),
+
+    path('getCompanies', views.all_cqmpanies),
+    path('getList', views.get_list),
+    path('getCategories', views.get_categories),
+
+    path('uploadCover', views.uploadCover),
+    path('uploadImg', views.uploadImg),
+
+    path('commitArticle', views.commitArticle),
 ]

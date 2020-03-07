@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+import UserInfo.views as views
 
 urlpatterns = [
-    
+    path('getNum', views.get_num),
+    path('getVipNum', views.get_vip_num),
 ]

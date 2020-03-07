@@ -2,71 +2,165 @@ from django.shortcuts import render, render_to_response, redirect
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from Company.models import CompanyModel, ArticleModel
+from Image.models import Img
 from Company.CmpJsonFactory import CmpJsonFactory as JsonFactory
 from utils.ListFactory import make_list
 from Company.forms import *
 from datetime import datetime
 # Create your views here.
 
-####  client 获取所以的商家 按会员级别顺序返回
+####  后台 获取所以的商家 按会员级别顺序返回
+@csrf_exempt
 def all_cqmpanies(request):
-    pages = request.GET.get('pages', 0)
-    objs = CompanyModel.objects.all().order_by('member_status')
-    jf = JsonFactory()
-    companies = jf.makeJsonList(objs,
-        pages,
-        'id',
-        'name',
-        'logo'
-    )
-    if companies:
-        return JsonResponse(companies, safe=False)
-    else:
-        return HttpResponse(status=404)
+    '''
+    post form
+        pages
+    '''
+    if request.method == 'POST':
+        pages = request.POST.get('pages', 0)
+        objs = CompanyModel.objects.all().order_by('member_status')
+        jf = JsonFactory()
+        companies = jf.makeJsonList(objs,
+            pages,
+            'id',
+            'name',
+            'logo'
+        )
+        if companies:
+            return JsonResponse({'code': 200, 'data': companies})
+        else:
+            return JsonResponse({'code': 0, 'msg': 'err '})
+
+## 后台
+@csrf_exempt
+def get_list(request):
+    '''
+    post form:
+        company_id,
+        type_id,
+        pages, 
+    '''
+    if request.method == 'POST':
+        company_id = request.POST.get('company_id', None)
+        type_id = request.POST.get('type_id', None)
+        pages = request.POST.get('pages', 0)
+        if company_id != None and type_id != None:
+            objs = ArticleModel.objects.filter(company_id=company_id, type_id=type_id)
+        else:
+            return JsonResponse({'code': 0, 'msg': '未找到符合条件文章'})
+        jf = JsonFactory()
+        news_list = jf.makeJsonList(objs,
+            pages,
+            'id',
+            'title',
+            'abstract',
+            'visits',
+            'likes',
+            'shares'
+        )
+        if news_list:
+            json = {'code':200, 'data': news_list}
+            return JsonResponse(json, safe=False)
+        else:
+            return JsonResponse({'code': 0, 'msg': '未找到符合条件文章'})
+
+## 后台 获得文章种类
+@csrf_exempt
+def get_categories(request):
+    if request.method == 'POST':
+        return JsonResponse({'code': 200, 'data': [{'1': '活动', '2': '新闻'}]})
 
 ### client 商家动态列表
 def get_news(request):
-    company_id = request.POST.get('company_id', None)
-    if not company_id:
-        return HttpResponse(status=404)
-    pages = request.GET.get('pages', 0)
-    objs = ArticleModel.objects.filter(company_id=company_id, type=True)
-    jf = JsonFactory()
-    news_list = jf.makeJsonList(objs,
-        pages,
-        'id',
-        'title',
-        'abstract',
-        'visits',
-        'likes',
-        'shares'
-    )
-    if news_list:
-        return JsonResponse(news_list, safe=False)
-    else:
-        return HttpResponse(status=404)
+    if request.method == 'POST':
+        company_id = request.POST.get('company_id', None)
+        if not company_id:
+            return HttpResponse(status=404)
+        pages = request.GET.get('pages', 0)
+        objs = ArticleModel.objects.filter(company_id=company_id, type=True)
+        jf = JsonFactory()
+        news_list = jf.makeJsonList(objs,
+            pages,
+            'id',
+            'title',
+            'abstract',
+            'visits',
+            'likes',
+            'shares'
+        )
+        if news_list:
+            json = {'code':200, 'data': news_list}
+            return JsonResponse(json, safe=False)
+        else:
+            return JsonResponse({'code': 0, 'msg': '未找到符合条件文章'})
+
+## 后台 上传封面图片
+@csrf_exempt
+def uploadCover(request):
+    if request.method == 'POST':
+        img = Img(img_url=request.FILES.get('img'))
+        img.save()
+        return JsonResponse({'code': 200, 'data': [img.img_url.url]})
+    return render(request, 'imgupload.html')
+
+## 后台 上传markdown的图片
+@csrf_exempt
+def uploadImg(request):
+    if request.method == 'POST':
+        img = Img(img_url=request.FILES.get('img'))
+        img.save()
+        return JsonResponse({'code': 200, 'data': [img.img_url.url]})
+    return render(request, 'imgupload.html')
+
+## 后台 提交文章
+@csrf_exempt
+def commitArticle(request):
+    '''
+    post form = 
+        'company_id': ..
+        'type_id': ..
+        'images': string
+        'abstract': string
+        'title': string
+        'content': string
+    
+    '''
+    if request.method == 'POST':
+        form = ArticleForm(request.POST)
+        if form.is_valid():
+            form.save(commit=True)
+            return JsonResponse({'code': 200})
+    return render(request, 'post.html', {'form': ArticleForm()})
+
+
+
+
+
+
+
 
 #### client 商家活动列表
 def get_activities(request):
-    company_id = request.POST.get('company_id', None)
-    if not company_id:
-        return HttpResponse(status=404)
-    pages = request.GET.get('pages', 0)
-    objs = ArticleModel.objects.filter(company_id=company_id, type=False)
-    jf = JsonFactory()
-    activities = jf.makeJsonList(objs,
-        pages,
-        'id',
-        'title',
-        'abstract',
-        'visits',
-        'likes',
-        'shares'
-    )
-    if activities:
-        return JsonResponse(activities, safe=False)
-    else:
-        return HttpResponse(status=404)
+    if request.method == 'POST':
+        company_id = request.POST.get('company_id', None)
+        if not company_id:
+            return HttpResponse(status=404)
+        pages = request.GET.get('pages', 0)
+        objs = ArticleModel.objects.filter(company_id=company_id, type=False)
+        jf = JsonFactory()
+        activities = jf.makeJsonList(objs,
+            pages,
+            'id',
+            'title',
+            'abstract',
+            'visits',
+            'likes',
+            'shares'
+        )
+        if activities:
+            return JsonResponse(activities, safe=False)
+        else:
+            return HttpResponse(status=404)
 
 ### client 获取类型为活动的文章的数量
 def get_activities_count(request):
