@@ -1,5 +1,5 @@
 from django import forms
-from mdeditor.fields import MDTextFormField
+# from mdeditor.fields import MDTextFormField
 from Company.models import CompanyModel, ArticleModel
 
 class CompanyForm(forms.ModelForm):

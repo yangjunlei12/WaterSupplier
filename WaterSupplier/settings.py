@@ -25,7 +25,7 @@ SECRET_KEY = '$te7)8hdhy5k@2q^r-e4mnm@e7fdw@ka%fdfbzhcca$bc&z2km'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['106.15.228.136']
+ALLOWED_HOSTS = ['106.15.228.136', '127.0.0.1' ]
 
 
 # Application definition
@@ -43,9 +43,9 @@ INSTALLED_APPS = [
     'Company',
     'Agency',
     'Image',
-    'mdeditor',
-    'rest_framework',
-    'rest_framework_swagger',
+    # 'mdeditor',
+    # 'rest_framework',
+    # 'rest_framework_swagger',
 ]
 
 MIDDLEWARE = [

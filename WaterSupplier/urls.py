@@ -33,7 +33,7 @@ urlpatterns = [
     path('articleAPI/', include('Company.urls'), name='articleAPI'),
     path('img/', include('Image.urls')),
     # 
-    path('mdeditor/', include('mdeditor.urls')),
+    # path('mdeditor/', include('mdeditor.urls')),
     path('example/', include('example.urls')),
 ]
 
