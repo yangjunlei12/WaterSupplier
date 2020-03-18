@@ -129,8 +129,9 @@ def commitArticle(request):
         form = ArticleForm(request.POST)
         if form.is_valid():
             form.save(commit=True)
-            return JsonResponse({'code': 200})
-    return render(request, 'post.html', {'form': ArticleForm()})
+            return JsonResponse({'code': 200, 'message': 'OK'})
+        else:
+            return JsonResponse({'code': 0, 'message': 'error'})
 
 
 

@@ -70,7 +70,7 @@ def get_company_product(request):
     if request.method == 'POST':
         company_id = request.POST.get('company_id', None)
         if not company_id:
-            return HttpResponse(status=404)
+            return JsonResponse({'code': 0, 'msg': '未找到该商家'})
         objs = ProductModel.objects.filter(company_id=company_id).order_by('create')
         pages = request.GET.get('page', 0)
         jf = JsonFactory()
@@ -89,6 +89,21 @@ def get_company_product(request):
         else:
             return JsonResponse({'code': 0, 'msg': '未找到符合条件商品'})
 
+### client 获取所以商家的id
+def get_company_id(request):
+    if request.method == 'POST':
+        pages = request.POST.get('pages', 0)
+        objs = CompanyModel.objects.all().order_by('member_status')
+        jf = JsonFactory()
+        companies = jf.makeJsonList(objs,
+            pages,
+            'id',
+        )
+        if companies:
+            json = {'code':200, 'data': companies}
+            return JsonResponse(json)
+        else:
+            return JsonResponse({'code': 0, 'msg': '未找到公司'})
 
 ####  后台 获取所以的商家 按会员级别顺序返回
 @csrf_exempt
@@ -138,7 +153,7 @@ def commitProduct(request):
     'images': 轮播图 string
     'abstract': 摘要
     'content': 内容
-    'price' : 价格
+    'price' : 价格 
     'discount': 折扣
 
     '''

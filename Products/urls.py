@@ -19,6 +19,7 @@ import Products.views as views
 
 
 '''
+http://106.15.228.136:8090/
  productAPI/ + ...
 '''
 urlpatterns = [
@@ -27,11 +28,14 @@ urlpatterns = [
     re_path(r'show/(?P<company_id>\d+)/$', views.show_com_pro),
 
     path('getCompanys', views.all_cqmpanies),
-    path('getList/', views.get_product_list),
+    path('getList/', views.get_product_list),# client & backend
     re_path(r'getCategory/', views.get_company_product),
 
     path('uploadCover', views.uploadCover),
     path('uploadDetailImg', views.upload_detail),
     path('commitProduct', views.commitProduct),
     path('addCategory', views.add_category),
+
+    path('GetDetail', views.get_product_info),
+    path('getId', views.get_company_id),
 ]
