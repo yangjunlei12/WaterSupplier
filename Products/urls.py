@@ -29,7 +29,7 @@ urlpatterns = [
 
     path('getCompanys', views.all_cqmpanies),
     path('getList/', views.get_product_list),# client & backend
-    re_path(r'getCategory/', views.get_company_product),
+    re_path(r'getCategory/', views.get_product_type),
 
     path('uploadCover', views.uploadCover),
     path('uploadDetailImg', views.upload_detail),

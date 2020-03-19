@@ -1,6 +1,6 @@
 from django.shortcuts import render, render_to_response, redirect
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
-from Products.models import ProductModel
+from Products.models import ProductModel, ProductType
 from Company.models import CompanyModel
 from Image.models import Img
 from Products.ProductJsonFactory import ProductJsonFactory as JsonFactory
@@ -85,6 +85,28 @@ def get_company_product(request):
         )
         if products:
             json = {'code':200, 'data': products}
+            return JsonResponse(json)
+        else:
+            return JsonResponse({'code': 0, 'msg': '未找到符合条件商品'})
+
+@csrf_exempt
+def get_product_type(request):
+    if request.method == 'POST':
+        company_id = request.POST.get('company_id', None)
+        if not company_id:
+            return JsonResponse({'code': 0, 'msg': '未找到该商家'})
+        pages = request.GET.get('page', 0)
+        objs = ProductModel.objects.filter(company_id=company_id).value_list('type_id', flat=True)
+        type_set = list(set(objs))
+        type_objs = ProductType.objects.filter(id__in=type_set)
+        data = jf.makeJsonList(type_objs, 
+            pages,
+            'id',
+            'company_id',
+            'name'
+        )
+        if data:
+            json = {'code': 200, 'data': data}
             return JsonResponse(json)
         else:
             return JsonResponse({'code': 0, 'msg': '未找到符合条件商品'})
