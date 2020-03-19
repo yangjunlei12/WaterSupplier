@@ -96,7 +96,7 @@ def get_product_type(request):
         if not company_id:
             return JsonResponse({'code': 0, 'msg': '未找到该商家'})
         pages = request.GET.get('page', 0)
-        objs = ProductModel.objects.filter(company_id=company_id).value_list('type_id', flat=True)
+        objs = ProductModel.objects.filter(company_id=company_id).values_list('type_id', flat=True)
         type_set = list(set(objs))
         type_objs = ProductType.objects.filter(id__in=type_set)
         data = jf.makeJsonList(type_objs, 
