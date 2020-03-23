@@ -20,4 +20,5 @@ import Image.views as views
 urlpatterns = [
     path('upload', views.upload_img),
     path('getImg', views.get_img),
+    path('url', views.upload_image),
 ]

@@ -8,8 +8,8 @@ from Products.forms import ProductForm, TypeForm
 from django.views.decorators.csrf import csrf_exempt
 from utils.ListFactory import make_list
 from utils.FormModelSaver import ObjCacher
-# Create your views here.
 
+# Create your views here.
 ## 后台
 @csrf_exempt
 def get_product_list(request):
@@ -99,6 +99,7 @@ def get_product_type(request):
         objs = ProductModel.objects.filter(company_id=company_id).values_list('type_id', flat=True)
         type_set = list(set(objs))
         type_objs = ProductType.objects.filter(id__in=type_set)
+        jf = JsonFactory()
         data = jf.makeJsonList(type_objs, 
             pages,
             'id',
@@ -163,6 +164,8 @@ def upload_detail(request):
         img.save()
         return JsonResponse({'code': 200, 'data': [img.img_url.url]})
     return render(request, 'imgupload.html')
+
+
 
 
 @csrf_exempt

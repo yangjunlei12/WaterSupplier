@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 import Company.views as views
-
+from Image.views import upload_image
 
 '''
 articleAPI/ + ...
@@ -35,8 +35,8 @@ urlpatterns = [
     path('getList', views.get_list),
     path('getCategories', views.get_categories),
 
-    path('uploadCover', views.uploadCover),
-    path('uploadImg', views.uploadImg),
+    path('uploadCover', upload_image),
+    path('uploadImg', upload_image),
 
     path('commitArticle', views.commitArticle),
 ]
